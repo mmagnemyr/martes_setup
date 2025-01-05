@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CURRENT_DIR="$(pwd)"
+
 # Update package manager
 echo "Updating package manager..."
 sudo apt update && sudo apt upgrade -y
@@ -40,13 +42,13 @@ SERVICE_PATH="/etc/systemd/system/martes-docker-compose.service"
 echo "Creating a systemd service for docker-compose at $SERVICE_PATH..."
 sudo tee $SERVICE_PATH > /dev/null <<EOL
 [Unit]
-Description=Start Docker Compose in /mnt/c/martes
+Description=Start Docker Compose in current directory
 Requires=docker.service
 After=docker.service
 
 [Service]
 Type=oneshot
-WorkingDirectory=/mnt/c/martes
+WorkingDirectory=$CURRENT_DIR
 ExecStart=/usr/local/bin/docker-compose up -d
 ExecStop=/usr/local/bin/docker-compose down
 RemainAfterExit=yes
