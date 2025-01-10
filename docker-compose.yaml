@@ -87,7 +87,7 @@ services:
 
 volumes:
   mongo_data:
-    name: app_mongo_data_prod
+    name: app_mongo_data_prod2
 
 networks:
   app_default:
