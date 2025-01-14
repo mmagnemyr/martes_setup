@@ -12,8 +12,8 @@ LINUX_PATH=$(echo $WIN_PATH | sed 's|\\|/|g' | sed 's|C:|/mnt/c|')
 echo "WIN_PATH: $WIN_PATH"
 echo "LINUX_PATH: $LINUX_PATH"
 
-# rm -rf msaccess
-mkdir msaccess
+rm -rf ./msaccess
+mkdigir msaccess
 
 # Debug: Check if the LINUX_PATH exists
 if [ ! -d "$LINUX_PATH" ]; then
