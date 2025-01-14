@@ -63,8 +63,8 @@ sudo systemctl enable martes-docker-compose.service
 sudo systemctl start martes-docker-compose.service
 
 # Final message
-echo "Setup complete! Please restart WSL with the following commands:"
-echo "1. Exit WSL: exit"
-echo "2. In PowerShell: wsl --shutdown"
-echo "3. Restart WSL and verify Docker with: docker ps"
-echo "4. Verify Docker Compose service with: sudo systemctl status martes-docker-compose.service"
+echo "Setup complete!"
+# echo "1. Exit WSL: exit"
+# echo "2. In PowerShell: wsl --shutdown"
+# echo "3. Restart WSL and verify Docker with: docker ps"
+#  "4. Verify Docker Compose service with: sudo systemctl status martes-docker-compose.service"
