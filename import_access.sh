@@ -30,4 +30,4 @@ cp -r "$LINUX_PATH"/* ./msaccess/
 docker exec martes_backend rm -rf /msaccess
 docker cp ./msaccess martes_backend:/msaccess
 # Execute the import.sh script located in the /app folder of the container
-docker exec martes_backend sh -c "cd /app && ./igit rt.sh"
+docker exec martes_backend sh -c "cd /app && ./import.sh"
