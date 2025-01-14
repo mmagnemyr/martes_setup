@@ -13,7 +13,7 @@ echo "WIN_PATH: $WIN_PATH"
 echo "LINUX_PATH: $LINUX_PATH"
 
 rm -rf ./msaccess
-mkdigir msaccess
+mkdir msaccess
 
 # Debug: Check if the LINUX_PATH exists
 if [ ! -d "$LINUX_PATH" ]; then
