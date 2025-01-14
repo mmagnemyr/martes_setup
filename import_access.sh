@@ -25,7 +25,7 @@ fi
 echo "Contents of $LINUX_PATH:"
 ls -la "$LINUX_PATH"
 
-cp -r "$LINUX_PATH"/* ./msaccess/
+# cp -r "$LINUX_PATH"/* ./msaccess/
 
 docker exec martes_backend rm -rf /msaccess
 docker cp ./msaccess martes_backend:/msaccess
