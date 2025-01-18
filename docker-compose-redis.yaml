@@ -1,0 +1,106 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:8.0
+    container_name: martes_mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_AUTH_DB}
+    healthcheck:
+      test: >
+        bash -c "echo 'db.runCommand({ ping: 1 })' | mongosh admin --username ${MONGO_INITDB_ROOT_USERNAME} --password ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase ${MONGODB_AUTH_DB} --quiet --norc"
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    networks:
+      - app_default
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - app_default
+
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: dockerfile
+    image: magnemyr/martes-backend:latest
+    container_name: martes_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_AUTH_DB}
+      # If you need to pass Redis configuration to your app, add relevant env vars here.
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app_default
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f -k http://backend:8000/getVersion || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    image: magnemyr/martes-frontend:latest
+    container_name: martes_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://martes_backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app_default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  init-mongo:
+    image: magnemyr/martes-backend:latest
+    container_name: init_mongo
+    command: ["python", "./macli.py", "-action", "init", "-lk", "test"]
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_AUTH_DB}
+    depends_on:
+      backend:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - app_default
+
+volumes:
+  mongo_data:
+    name: app_mongo_data_prod2
+
+networks:
+  app_default:
+    driver: bridge
