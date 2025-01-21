@@ -8,9 +8,9 @@ fi
 WIN_PATH=$1
 LINUX_PATH=$(echo $WIN_PATH | sed 's|\\|/|g' | sed 's|C:|/mnt/c|')
 
-rm -rf backup
-mkdir backup
-cp -r $LINUX_PATH/* ./backup/
+# rm -rf backup
+# mkdir backup
+# cp -r $LINUX_PATH/* ./backup/
 
 docker exec martes_mongodb rm -rf /restore_backup3
 docker cp ./backup martes_mongodb:/restore_backup3
