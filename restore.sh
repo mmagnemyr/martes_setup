@@ -15,5 +15,5 @@ LINUX_PATH=$(echo $WIN_PATH | sed 's|\\|/|g' | sed 's|C:|/mnt/c|')
 echo "LINUX_PATH is: $LINUX_PATH"
 
 docker exec martes_mongodb rm -rf /restore_backup3
-echo "LINUX_PATH is: $LINUX_PATH"
+docker cp .backup martes_mongodb:/restore_backup3
 docker exec -i martes_mongodb mongorestore --username admin --password secret --authenticationDatabase admin --drop --dir /restore_backup3 --nsExclude='admin.*'
