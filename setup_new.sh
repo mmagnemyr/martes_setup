@@ -117,6 +117,10 @@ echo "Enabling and starting the Docker Compose systemd service..."
 sudo systemctl enable martes-docker-compose.service
 sudo systemctl start martes-docker-compose.service
 
+
+sudo usermod -aG docker $CURRENT_USER
+sudo usermod -aG martes $CURRENT_USER
+
 #
 # 7. Final Messages
 #
