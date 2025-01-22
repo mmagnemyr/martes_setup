@@ -121,6 +121,8 @@ sudo systemctl start martes-docker-compose.service
 sudo usermod -aG docker $CURRENT_USER
 sudo usermod -aG martes $CURRENT_USER
 
+sudo chmod -R 770 /home/martes
+sudo chown -R martes:martes /home/martes
 #
 # 7. Final Messages
 #
