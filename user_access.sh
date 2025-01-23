@@ -10,6 +10,7 @@ echo "Adding user '$CURRENT_USER' to the docker group..."
 sudo groupadd docker || echo "Docker group already exists."
 sudo usermod -aG docker "$CURRENT_USER"
 
+
 # Fix Docker socket permissions
 echo "Fixing Docker socket permissions..."
 if [ -S /var/run/docker.sock ]; then
@@ -18,7 +19,7 @@ if [ -S /var/run/docker.sock ]; then
 fi
 
 MARTES_HOME="/home/$MARTES_USER"
-
+newgrp docker
 echo "Granting full access to '$MARTES_HOME' for user '$CURRENT_USER'..."
 sudo usermod -aG $CURRENT_USER $MARTES_USER  # Add the current user to the 'martes' user's group
 sudo chmod -R 770 $MARTES_HOME              # Set full permissions for the owner and group
