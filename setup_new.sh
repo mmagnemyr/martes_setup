@@ -123,6 +123,9 @@ sudo usermod -aG martes $CURRENT_USER
 
 sudo chmod -R 770 /home/martes
 sudo chown -R martes:martes /home/martes
+
+
+sudo ./conf_wsl.sh
 #
 # 7. Final Messages
 #
