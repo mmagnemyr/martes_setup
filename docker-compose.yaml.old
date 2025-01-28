@@ -2,6 +2,7 @@ services:
   mongo:
     image: mongo:8.0 
     container_name: martes_mongodb
+    restart: unless-stopped
     ports:
       - "27018:27017"
     volumes:
@@ -20,9 +21,12 @@ services:
       - app_default
 
   backend:
-    
+    build:
+      context: ../../backend
+      dockerfile: dockerfile
     image: magnemyr/martes-backend:latest
     container_name: martes_backend
+    restart: unless-stopped
     ports:
       - "8000:8000"
     environment:
@@ -39,6 +43,25 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f -k http://backend:8000/getVersion || exit 1"]
       interval: 5s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    image: magnemyr/martes-frontend:latest
+    container_name: martes_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000" # Adjust host port if 80 is occupied
+    environment:
+      - API_URL=http://martes_backend:8000 # Example environment variable
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app_default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"] # Ensures Nginx is serving the frontend
+      interval: 30s
       timeout: 10s
       retries: 3
 
@@ -61,18 +84,10 @@ services:
     networks:
       - app_default
 
-  martes-nginx:
-    image: magnemyr/martes-nginx:latest
-    ports:
-      - "80:80"  # Expose NGINX to the host on port 80  
-    depends_on:
-      - backend
-    networks:
-      - app_default
 
 volumes:
   mongo_data:
-    name: app_mongo_data_prod
+    name: app_mongo_data_prod2
 
 networks:
   app_default:
