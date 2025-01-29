@@ -94,28 +94,28 @@ EOL
 #
 # 6. Create a systemd service for Docker Compose in the current directory
 #
-SERVICE_PATH="/etc/systemd/system/martes-docker-compose.service"
-echo "Creating a systemd service for Docker Compose at $SERVICE_PATH..."
-sudo tee "$SERVICE_PATH" > /dev/null <<EOL
-[Unit]
-Description=Start Docker Compose in current directory
-Requires=docker.service
-After=docker.service
+# SERVICE_PATH="/etc/systemd/system/martes-docker-compose.service"
+# echo "Creating a systemd service for Docker Compose at $SERVICE_PATH..."
+# sudo tee "$SERVICE_PATH" > /dev/null <<EOL
+# [Unit]
+# Description=Start Docker Compose in current directory
+# Requires=docker.service
+# After=docker.service
 
-[Service]
-Type=oneshot
-WorkingDirectory=$CURRENT_DIR
-ExecStart=/usr/bin/docker compose up -d
-ExecStop=/usr/bin/docker compose down
-RemainAfterExit=yes
+# [Service]
+# Type=oneshot
+# WorkingDirectory=$CURRENT_DIR
+# ExecStart=/usr/bin/docker compose up -d
+# ExecStop=/usr/bin/docker compose down
+# RemainAfterExit=yes
 
-[Install]
-WantedBy=multi-user.target
-EOL
+# [Install]
+# WantedBy=multi-user.target
+# EOL
 
-echo "Enabling and starting the Docker Compose systemd service..."
-sudo systemctl enable martes-docker-compose.service
-sudo systemctl start martes-docker-compose.service
+# echo "Enabling and starting the Docker Compose systemd service..."
+# sudo systemctl enable martes-docker-compose.service
+# sudo systemctl start martes-docker-compose.service
 
 
 sudo usermod -aG docker $CURRENT_USER
