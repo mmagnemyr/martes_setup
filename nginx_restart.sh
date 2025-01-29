@@ -1,0 +1,1 @@
+docker exec -it martes_frontend nginx -s reload
