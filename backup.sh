@@ -13,9 +13,9 @@ mkdir backup
 # cp -r $LINUX_PATH/* ./backup/
 
 
-docker exec martes_mongodb rm -rf /backup
+docker exec martes_mongodb rm -rf /mongo_backup
 docker exec -i martes_mongodb mongodump --username admin --password secret --authenticationDatabase admin --out ./mongo_backup
-docker cp martes_mongodb:./mongo_backup ./mongo_backup
+docker cp martes_mongodb:./mongo_backup ./martes_data_backup
 
 # Copy the backup to the Windows path + /backup
 # WIN_BACKUP_PATH=$(echo $WIN_PATH | sed 's|\\|/|g' | sed 's|C:|/mnt/c|')
