@@ -67,7 +67,7 @@ services:
     image: magnemyr/martes-nginx:latest
     container_name: martes_frontend
     ports:
-      - "80:80"  # Expose NGINX to the host on port 80  
+      - "8080:8080"  # Expose NGINX to the host on port 80  
     volumes:
       # Mount custom Nginx config to override the one in the image
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
