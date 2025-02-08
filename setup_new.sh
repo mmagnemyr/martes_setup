@@ -10,15 +10,28 @@ echo "Ensuring both Docker and 'martes' permissions are configured..."
 #
 # 1. Update packages and install Docker
 #
-echo "Updating package list and upgrading existing packages..."
-sudo apt-get update && sudo apt-get upgrade -y
+# echo "Updating package list and upgrading existing packages..."
+# sudo apt-get update && sudo apt-get upgrade -y
 
 echo "Installing prerequisites for Docker’s official repository..."
-sudo apt-get install -y \
+# sudo apt-get install -y \
+#    ca-certificates \
+#    curl \
+#    gnupg \
+#    lsb-release
+
+sudo apt-get update && sudo apt-get install -y \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
+    lsb-release \
+    git \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin
+
 
 echo "Adding Docker’s official GPG key..."
 sudo mkdir -p /etc/apt/keyrings
